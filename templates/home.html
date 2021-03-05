@@ -2,56 +2,70 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ECharts</title>
-    <!-- 다운받은 echarts 파일 -->
+    <title>{{sosok}} 시가총액 그래프</title>
     <script type="text/javascript"
     src="{{ url_for('static', filename='echarts.js') }}"></script>
+    <link href="../static/css/main.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
 </head>
 
-<body>
-<!-- 높이와 너비가 지정된 Dom 을 생성합니다 -->
-<div id="main" style="width: 1800px;height:1200px;"></div>
-    
+<body bgcolor="#2c343c">
+<font face="Gugi"><p style="text-align: center;"><a href="http://1.236.207.17:5000/kospi">KOSPI / </a>
+<a href="http://1.236.207.17:5000/kosdaq">KOSDAQ</a></font>
+<div id="main" style="width: 1800px;height:1200px; margin: auto; text-align: center;vertical-align: center;"></div>
+<center>
     <script type="text/javascript">
-      var chartDom = document.getElementById('main');
-var myChart = echarts.init(chartDom);
-var option;
-var names = {{names|tojson}};
-var caps = {{caps|tojson}};
-var arr = [];
-for (var i=0; i<names.length; i++) {
-    var item = {value: caps[i], name: names[i]};
-    arr.push(item);
-}
-option = {
-    title: {
-        text: 'KOSPI 시가총액',
-        left: 'center'
-    },
-    tooltip: {
-        trigger: 'item',
-        formatter: '{b} : {c} ({d}%)'
-    },
-    series: [
-        {
-            type: 'pie',
-            radius: '65%',
-            center: ['50%', '40%'],
-            selectedMode: 'single',
-            data: arr,
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
+    var names = {{names|tojson}};
+    var caps = {{caps|tojson}};
+    const title = '{{sosok}}'+' 시가총액';
+    var arr = [];
+    for (var i=0; i<names.length; i++) {
+        var item = {value: caps[i], name: names[i]};
+        arr.push(item);
+    }
+
+    option = {
+        title: {
+            text: title,
+            subtext: '상위 50개 기업',
+            left: 'center',
+            textStyle: {
+                color: '#f0f0f0'
+            }
+        },
+        backgroundColor: '#2c343c',
+        textStyle: {
+            color: 'rgba(255, 255, 255, 0.3)'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b} : {c} 천만 ₩ ({d}%)'
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '40%'],
+                selectedMode: 'single',
+                data: arr,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
                 }
             }
-        }
-    ]
-};
+        ]
+    };
 
     myChart.setOption(option);
-    </script>
-    {{names|tojson}}<br>{{caps|tojson}}
+    </script></center></p>
+
     </body>
 </html>
